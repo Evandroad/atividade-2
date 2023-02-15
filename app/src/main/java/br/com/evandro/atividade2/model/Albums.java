@@ -1,4 +1,4 @@
-package br.edu.uniritter.mobile.nossaprimeiraappnoite.model;
+package br.com.evandro.atividade2.model;
 
 import android.os.Build;
 import android.os.Parcel;
@@ -6,9 +6,12 @@ import android.os.Parcelable;
 import androidx.annotation.RequiresApi;
 
 public class Albums implements Parcelable{
+
     private int userId;
     private int id;
     private String title;
+
+    public Albums() {}
 
     public Albums(int userId, int id, String title) {
         this.userId = userId;
@@ -26,44 +29,23 @@ public class Albums implements Parcelable{
     public static final Parcelable.Creator<Albums> CREATOR = new Parcelable.Creator<Albums>() {
         @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
-        public Albums createFromParcel(Parcel in) {
-            return new Albums(in);
-        }
+        public Albums createFromParcel(Parcel in) { return new Albums(in); }
 
         @Override
-        public Albums[] newArray(int size) {
-            return new Albums[size];
-        }
+        public Albums[] newArray(int size) { return new Albums[size]; }
     };
 
-    public int getUserId() {
-        return userId;
-    }
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 
-    public void setUser (int userId) {
-        this.userId = userId;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
+    public int describeContents() { return 0; }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override

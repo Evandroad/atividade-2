@@ -1,11 +1,10 @@
-package br.edu.uniritter.mobile.nossaprimeiraappnoite;
+package br.com.evandro.atividade2;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -24,61 +23,64 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.edu.uniritter.mobile.nossaprimeiraappnoite.model.Albums;
-import br.edu.uniritter.mobile.nossaprimeiraappnoite.model.Todo;
+import br.com.evandro.atividade2.model.Albums;
 
-public class AlbumsActivity extends AppCompatActivity
-        implements Response.Listener<JSONArray>,
-        Response.ErrorListener{
+public class AlbumsActivity extends AppCompatActivity implements Response.Listener<JSONArray>, Response.ErrorListener {
 
     List<Albums> albums =  new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_albums);
 
-// Volley
+        // Volley
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "https://jsonplaceholder.typicode.com/albums";
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(Request.Method.GET, url, null,
-                this, this);
+        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
+            Request.Method.GET,
+            url,
+            null,
+            this,
+            this
+        );
 
         queue.add(jsonArrayRequest);
-        Toast.makeText(this,"qtd:"+albums.size(),Toast.LENGTH_LONG).show();
     }
 
-// Volley
     @Override
     public void onResponse(JSONArray response) {
         try {
-            for(int i = 0; i < response.length(); i++) {
+            for (int i = 0; i < response.length(); i++) {
                 JSONObject json = response.getJSONObject(i);
-                Albums obj = new Albums(json.getInt("userId"),
-                        json.getInt("id"),
-                        json.getString("title"));
+
+                Albums obj = new Albums();
+                obj.setUserId(json.getInt("userId"));
+                obj.setId(json.getInt("id"));
+                obj.setTitle(json.getString("title"));
+
                 albums.add(obj);
             }
-            Toast.makeText(this,"qtd:"+albums.size(),Toast.LENGTH_LONG).show();
+
+            Toast.makeText(this,"qtd: " + albums.size(), Toast.LENGTH_SHORT).show();
             LinearLayout ll = findViewById(R.id.layoutVerticalItens);
-            for(Albums obj1 : albums) {
+
+            for (Albums obj1 : albums) {
                 Button bt = new Button(this);
                 bt.setText(obj1.getTitle());
                 bt.setTag(obj1);
-                bt.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Button btn = (Button) v;
-                        Albums albums = (Albums) btn.getTag();
-                        Intent intent = new Intent(getApplicationContext(), DetalheAlbumsActivity.class);
-                        intent.putExtra("objAlbums", albums);
-                        startActivity(intent);
-                    }
+                bt.setOnClickListener(v -> {
+                    Button btn = (Button) v;
+                    Albums albums = (Albums) btn.getTag();
+                    Intent intent = new Intent(getApplicationContext(), DetailAlbumActivity.class);
+                    intent.putExtra("objAlbums", albums);
+                    startActivity(intent);
                 });
                 ll.addView(bt);
             }
         } catch (JSONException e) {
-            Log.e("erro",e.getMessage());
+            Log.e("Error: ", e.getMessage());
             e.printStackTrace();
         }
     }
@@ -86,6 +88,6 @@ public class AlbumsActivity extends AppCompatActivity
     @Override
     public void onErrorResponse(VolleyError error) {
         String msg = error.getMessage();
-        Toast.makeText(this.getApplicationContext(),"deu erro: "+msg,Toast.LENGTH_LONG).show();
+        Toast.makeText(this.getApplicationContext(),"Error: " + msg, Toast.LENGTH_LONG).show();
     }
 }

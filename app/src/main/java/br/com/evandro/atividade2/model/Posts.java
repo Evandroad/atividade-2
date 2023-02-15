@@ -1,4 +1,4 @@
-package br.edu.uniritter.mobile.nossaprimeiraappnoite.model;
+package br.com.evandro.atividade2.model;
 
 import android.os.Build;
 import android.os.Parcel;
@@ -6,10 +6,13 @@ import android.os.Parcelable;
 import androidx.annotation.RequiresApi;
 
 public class Posts implements Parcelable{
+
     private int userId;
     private int id;
     private String title;
     private String body;
+
+    public Posts() {}
 
     public Posts(int userId, int id, String title, String body) {
         this.userId = userId;
@@ -29,52 +32,26 @@ public class Posts implements Parcelable{
     public static final Parcelable.Creator<Posts> CREATOR = new Parcelable.Creator<Posts>() {
         @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
-        public Posts createFromParcel(Parcel in) {
-            return new Posts(in);
-        }
+        public Posts createFromParcel(Parcel in) { return new Posts(in); }
 
         @Override
-        public Posts[] newArray(int size) {
-            return new Posts[size];
-        }
+        public Posts[] newArray(int size) { return new Posts[size]; }
     };
 
-    public int getUserId() {
-        return userId;
-    }
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 
-    public void setUser (int userId) {
-        this.userId = userId;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public int getId() {
-        return id;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
-    }
+    public String getBody() { return body; }
+    public void setBody(String body) { this.body = body; }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
+    public int describeContents() { return 0; }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -84,4 +61,5 @@ public class Posts implements Parcelable{
         parcel.writeString(this.title);
         parcel.writeString(this.body);
     }
+
 }

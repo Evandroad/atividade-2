@@ -1,4 +1,4 @@
-package br.edu.uniritter.mobile.nossaprimeiraappnoite.model;
+package br.com.evandro.atividade2.model;
 
 import android.os.Build;
 import android.os.Parcel;
@@ -6,10 +6,13 @@ import android.os.Parcelable;
 import androidx.annotation.RequiresApi;
 
 public class Todo implements Parcelable {
+
     private int userId;
     private int id;
     private String title;
     private boolean completed;
+
+    public Todo() {}
 
     public Todo(int userId, int id, String title, boolean completed) {
         this.userId = userId;
@@ -17,6 +20,7 @@ public class Todo implements Parcelable {
         this.title = title;
         this.completed = completed;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private Todo(Parcel parcel) {
         this.userId = parcel.readInt();
@@ -28,52 +32,26 @@ public class Todo implements Parcelable {
     public static final Creator<Todo> CREATOR = new Creator<Todo>() {
         @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
-        public Todo createFromParcel(Parcel in) {
-            return new Todo(in);
-        }
+        public Todo createFromParcel(Parcel in) { return new Todo(in); }
 
         @Override
-        public Todo[] newArray(int size) {
-            return new Todo[size];
-        }
+        public Todo[] newArray(int size) { return new Todo[size]; }
     };
 
-    public int getUserId() {
-        return userId;
-    }
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
 
-    public void setUser (int userId) {
-        this.userId = userId;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public int getId() {
-        return id;
-    }
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public boolean isCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
+    public boolean isCompleted() { return completed; }
+    public void setCompleted(boolean completed) { this.completed = completed; }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
+    public int describeContents() { return 0; }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     @Override
@@ -84,4 +62,5 @@ public class Todo implements Parcelable {
         parcel.writeBoolean(this.completed);
 
     }
+
 }
