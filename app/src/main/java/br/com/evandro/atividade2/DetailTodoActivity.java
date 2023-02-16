@@ -1,7 +1,5 @@
 package br.com.evandro.atividade2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,12 +8,14 @@ import android.widget.TextView;
 
 import br.com.evandro.atividade2.model.Todo;
 
-public class DetailTodoActivity extends AppCompatActivity {
+public class DetailTodoActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_todo);
+
+        getSupportActionBar().setTitle("Todo Detail");
 
         Intent intent = getIntent();
         Todo todo = intent.getParcelableExtra("objTodo");

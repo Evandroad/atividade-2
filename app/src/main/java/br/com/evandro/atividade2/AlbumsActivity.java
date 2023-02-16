@@ -1,7 +1,5 @@
 package br.com.evandro.atividade2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +23,7 @@ import java.util.List;
 
 import br.com.evandro.atividade2.model.Albums;
 
-public class AlbumsActivity extends AppCompatActivity implements Response.Listener<JSONArray>, Response.ErrorListener {
+public class AlbumsActivity extends BaseActivity implements Response.Listener<JSONArray>, Response.ErrorListener {
 
     List<Albums> albums =  new ArrayList<>();
 
@@ -33,6 +31,8 @@ public class AlbumsActivity extends AppCompatActivity implements Response.Listen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_albums);
+
+        getSupportActionBar().setTitle("Albums");
 
         // Volley
         RequestQueue queue = Volley.newRequestQueue(this);

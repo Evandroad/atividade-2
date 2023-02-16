@@ -1,7 +1,5 @@
 package br.com.evandro.atividade2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +23,7 @@ import java.util.List;
 
 import br.com.evandro.atividade2.model.Posts;
 
-public class PostsActivity extends AppCompatActivity implements Response.Listener<JSONArray>, Response.ErrorListener {
+public class PostsActivity extends BaseActivity implements Response.Listener<JSONArray>, Response.ErrorListener {
 
     List<Posts> posts =  new ArrayList<>();
 
@@ -33,6 +31,8 @@ public class PostsActivity extends AppCompatActivity implements Response.Listene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posts);
+
+        getSupportActionBar().setTitle("Posts");
 
         // Volley
         RequestQueue queue = Volley.newRequestQueue(this);

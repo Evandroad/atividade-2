@@ -7,7 +7,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "br.edu.uniritter.mobile.nossaprimeiraappnoite"
+        applicationId "br.com.evandro.atividade2"
         minSdkVersion 19
         targetSdkVersion 33
         versionCode 1

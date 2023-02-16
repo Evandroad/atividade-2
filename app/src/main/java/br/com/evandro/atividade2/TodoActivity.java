@@ -1,7 +1,5 @@
 package br.com.evandro.atividade2;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,10 +20,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import br.com.evandro.atividade2.model.Todo;
 
-public class TodoActivity extends AppCompatActivity implements Response.Listener<JSONArray>, Response.ErrorListener {
+public class TodoActivity extends BaseActivity implements Response.Listener<JSONArray>, Response.ErrorListener {
 
     List<Todo> todos =  new ArrayList<>();
 
@@ -33,6 +32,8 @@ public class TodoActivity extends AppCompatActivity implements Response.Listener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo);
+
+        Objects.requireNonNull(getSupportActionBar()).setTitle("ToDo");
 
         // Volley
         RequestQueue queue = Volley.newRequestQueue(this);
