@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
 
+import java.util.Objects;
+
 public class PrincipalActivity extends BaseActivity {
 
     @Override
@@ -11,7 +13,7 @@ public class PrincipalActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_principal);
 
-        getSupportActionBar().setTitle("Tela Principal");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Tela Principal");
 
         Button todo = findViewById(R.id.btTodo);
         Button posts = findViewById(R.id.btPosts);
