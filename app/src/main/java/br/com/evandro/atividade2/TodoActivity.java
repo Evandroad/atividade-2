@@ -7,26 +7,18 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 import br.com.evandro.atividade2.model.Todo;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class TodoActivity extends BaseActivity implements Response.Listener<JSONArray>, Response.ErrorListener {
-
-    List<Todo> todos =  new ArrayList<>();
+public class TodoActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,63 +27,40 @@ public class TodoActivity extends BaseActivity implements Response.Listener<JSON
 
         Objects.requireNonNull(getSupportActionBar()).setTitle("ToDo");
 
-        // Volley
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://jsonplaceholder.typicode.com/todos";
+        Api api = ApiClient.getClient().create(Api.class);
+        Call<List<Todo>> call = api.getTodos();
+        call.enqueue(new Callback<List<Todo>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Todo>> call, @NonNull Response<List<Todo>> response) {
+                if (response.body() == null) {
+                    return;
+                }
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-            Request.Method.GET,
-            url,
-            null,
-            this,
-            this
-        );
+                fillList(response.body());
+            }
 
-        queue.add(jsonArrayRequest);
+            @Override
+            public void onFailure(@NonNull Call<List<Todo>> call, @NonNull Throwable t) {
+                Log.e("Evandro", "Falha ao obter todos.");
+            }
+        });
     }
 
-    @Override
-    public void onResponse(JSONArray response) {
-        try {
-            for (int i = 0; i < response.length(); i++) {
-                JSONObject json = response.getJSONObject(i);
+    public void fillList(List<Todo> todos) {
+        Toast.makeText(this,"qtd: " + todos.size(), Toast.LENGTH_SHORT).show();
+        LinearLayout ll = findViewById(R.id.layoutVerticalItems);
 
-                Todo obj = new Todo();
-                obj.setUserId(json.getInt("userId"));
-                obj.setId(json.getInt("id"));
-                obj.setTitle(json.getString("title"));
-                obj.setCompleted(json.getBoolean("completed"));
+        for (Todo todo : todos) {
+            Button bt = new Button(this);
+            bt.setText(todo.getTitle());
+            bt.setOnClickListener(v -> {
+                Intent intent = new Intent(getApplicationContext(), DetailTodoActivity.class);
+                intent.putExtra("objTodo", todo);
+                startActivity(intent);
+            });
 
-                todos.add(obj);
-            }
-
-            Toast.makeText(this,"qtd: " + todos.size(), Toast.LENGTH_SHORT).show();
-            LinearLayout ll = findViewById(R.id.layoutVerticalItens);
-
-            for (Todo todo : todos) {
-                Button bt = new Button(this);
-                bt.setText(todo.getTitle());
-                bt.setTag(todo);
-                bt.setOnClickListener(v -> {
-                    Button btn = (Button) v;
-                    Todo _todo = (Todo) btn.getTag();
-                    Intent intent = new Intent(getApplicationContext(), DetailTodoActivity.class);
-                    intent.putExtra("objTodo", _todo);
-                    startActivity(intent);
-                });
-
-                ll.addView(bt);
-            }
-        } catch (JSONException e) {
-            Log.e("Error: ",e.getMessage());
-            e.printStackTrace();
+            ll.addView(bt);
         }
-    }
-
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        String msg = error.getMessage();
-        Toast.makeText(this.getApplicationContext(),"Error: " + msg, Toast.LENGTH_LONG).show();
     }
 
 }

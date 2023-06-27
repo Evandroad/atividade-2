@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">App Json</string>
     <string name="todo">Todo</string>
-    <string name="posts">Posts</string>
-    <string name="comments">Comments</string>
-    <string name="albums">Albums</string>
+    <string name="post">Posts</string>
+    <string name="comment">Comments</string>
+    <string name="album">Albums</string>
     <string name="dAlbums">Detalhe Do Album</string>
     <string name="dTodo">Detalhe Do Todo</string>
     <string name="dPosts">Detalhe Do Post</string>

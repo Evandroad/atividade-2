@@ -7,90 +7,61 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import br.com.evandro.atividade2.model.Comments;
+import br.com.evandro.atividade2.model.Comment;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class CommentsActivity extends BaseActivity implements Response.Listener<JSONArray>, Response.ErrorListener {
-
-    List<Comments> comments =  new ArrayList<>();
+public class CommentsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comments);
 
-        getSupportActionBar().setTitle("Comments");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Comments");
 
-        // Volley
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://jsonplaceholder.typicode.com/comments";
+        Api api = ApiClient.getClient().create(Api.class);
+        Call<List<Comment>> call = api.getComments();
+        call.enqueue(new Callback<List<Comment>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Comment>> call, @NonNull Response<List<Comment>> response) {
+                if (response.body() == null) {
+                    return;
+                }
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-            Request.Method.GET,
-            url,
-            null,
-            this,
-            this
-        );
+                fillList(response.body());
+            }
 
-        queue.add(jsonArrayRequest);
+            @Override
+            public void onFailure(@NonNull Call<List<Comment>> call, @NonNull Throwable t) {
+                Log.e("Evandro", "Falha ao obter comments.");
+            }
+        });
+
     }
 
-    @Override
-    public void onResponse(JSONArray response) {
-        try {
-            for (int i = 0; i < response.length(); i++) {
-                JSONObject json = response.getJSONObject(i);
+    public void fillList(List<Comment> comments) {
+        Toast.makeText(this, "qtd: " + comments.size(), Toast.LENGTH_LONG).show();
+        LinearLayout ll = findViewById(R.id.layoutVerticalItems);
 
-                Comments obj = new Comments();
-                obj.setPostId(json.getInt("postId"));
-                obj.setId(json.getInt("id"));
-                obj.setName(json.getString("name"));
-                obj.setEmail(json.getString("email"));
-                obj.setBody(json.getString("body"));
+        for (Comment comment : comments) {
+            Button bt = new Button(this);
+            bt.setText(comment.getName());
+            bt.setOnClickListener(v -> {
+                Intent intent = new Intent(getApplicationContext(), DetailCommentActivity.class);
+                intent.putExtra("objComments", comment);
+                startActivity(intent);
+            });
 
-                comments.add(obj);
-            }
-
-            Toast.makeText(this,"qtd: " + comments.size(), Toast.LENGTH_LONG).show();
-            LinearLayout ll = findViewById(R.id.layoutVerticalItens);
-
-            for (Comments obj1 : comments) {
-                Button bt = new Button(this);
-                bt.setText(obj1.getName());
-                bt.setTag(obj1);
-                bt.setOnClickListener(v -> {
-                    Button btn = (Button) v;
-                    Comments comments = (Comments) btn.getTag();
-                    Intent intent = new Intent(getApplicationContext(), DetailCommentActivity.class);
-                    intent.putExtra("objComments", comments);
-                    startActivity(intent);
-                });
-
-                ll.addView(bt);
-            }
-        } catch (JSONException e) {
-            Log.e("Error: ", e.getMessage());
-            e.printStackTrace();
+            ll.addView(bt);
         }
     }
 
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        String msg = error.getMessage();
-        Toast.makeText(this.getApplicationContext(),"Error: " + msg, Toast.LENGTH_LONG).show();
-    }
 }

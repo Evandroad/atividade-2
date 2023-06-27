@@ -5,37 +5,28 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.RequiresApi;
 
-public class Posts implements Parcelable{
+public class Post implements Parcelable{
 
     private int userId;
     private int id;
     private String title;
     private String body;
 
-    public Posts() {}
-
-    public Posts(int userId, int id, String title, String body) {
-        this.userId = userId;
-        this.id = id;
-        this.title = title;
-        this.body = body;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    private Posts(Parcel parcel) {
+    private Post(Parcel parcel) {
         this.userId = parcel.readInt();
         this.id = parcel.readInt();
         this.title = parcel.readString();
         this.body = parcel.readString();
     }
 
-    public static final Parcelable.Creator<Posts> CREATOR = new Parcelable.Creator<Posts>() {
+    public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
         @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
-        public Posts createFromParcel(Parcel in) { return new Posts(in); }
+        public Post createFromParcel(Parcel in) { return new Post(in); }
 
         @Override
-        public Posts[] newArray(int size) { return new Posts[size]; }
+        public Post[] newArray(int size) { return new Post[size]; }
     };
 
     public int getUserId() { return userId; }

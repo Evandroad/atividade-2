@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 import br.com.evandro.atividade2.model.Todo;
 
 public class DetailTodoActivity extends BaseActivity {
@@ -15,7 +17,7 @@ public class DetailTodoActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_todo);
 
-        getSupportActionBar().setTitle("Todo Detail");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Todo Detail");
 
         Intent intent = getIntent();
         Todo todo = intent.getParcelableExtra("objTodo");

@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import br.com.evandro.atividade2.model.Posts;
+import java.util.Objects;
+
+import br.com.evandro.atividade2.model.Post;
 
 public class DetailPostActivity extends BaseActivity {
 
@@ -13,19 +15,19 @@ public class DetailPostActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_post);
 
-        getSupportActionBar().setTitle("Post Detail");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Post Detail");
 
         Intent intent = getIntent();
-        Posts posts = intent.getParcelableExtra("objPosts");
+        Post post = intent.getParcelableExtra("objPosts");
 
         TextView tv = findViewById(R.id.tvIdPost);
-        tv.setText(String.valueOf(posts.getId()));
+        tv.setText(String.valueOf(post.getId()));
         tv = findViewById(R.id.tvIdUserPost);
-        tv.setText(String.valueOf(posts.getUserId()));
+        tv.setText(String.valueOf(post.getUserId()));
         tv = findViewById(R.id.tvTitlePost);
-        tv.setText(posts.getTitle());
+        tv.setText(post.getTitle());
         tv = findViewById(R.id.tvBodyPost);
-        tv.setText(posts.getTitle());
+        tv.setText(post.getBody());
     }
 
 }

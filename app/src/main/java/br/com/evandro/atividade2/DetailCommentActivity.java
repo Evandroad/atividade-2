@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import br.com.evandro.atividade2.model.Comments;
+import java.util.Objects;
+
+import br.com.evandro.atividade2.model.Comment;
 
 public class DetailCommentActivity extends BaseActivity {
 
@@ -13,21 +15,21 @@ public class DetailCommentActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_comment);
 
-        getSupportActionBar().setTitle("Comment Detail");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Comment Detail");
 
         Intent intent = getIntent();
-        Comments comments = intent.getParcelableExtra("objComments");
+        Comment comment = intent.getParcelableExtra("objComments");
 
         TextView tv = findViewById(R.id.tvPostIdComment);
-        tv.setText(String.valueOf(comments.getPostId()));
+        tv.setText(String.valueOf(comment.getPostId()));
         tv = findViewById(R.id.tvIdComment);
-        tv.setText(String.valueOf(comments.getId()));
+        tv.setText(String.valueOf(comment.getId()));
         tv = findViewById(R.id.tvName);
-        tv.setText(comments.getName());
+        tv.setText(comment.getName());
         tv = findViewById(R.id.tvEmail);
-        tv.setText(comments.getEmail());
+        tv.setText(comment.getEmail());
         tv = findViewById(R.id.tvBodyPost);
-        tv.setText(comments.getBody());
+        tv.setText(comment.getBody());
     }
 
 }

@@ -5,7 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.RequiresApi;
 
-public class Comments implements Parcelable {
+public class Comment implements Parcelable {
 
     private int postId;
     private int id;
@@ -13,18 +13,8 @@ public class Comments implements Parcelable {
     private String email;
     private String body;
 
-    public Comments() {}
-
-    public Comments(int postId, int id, String name, String email, String body) {
-        this.postId = postId;
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.body = body;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    private Comments(Parcel parcel) {
+    private Comment(Parcel parcel) {
         this.postId = parcel.readInt();
         this.id = parcel.readInt();
         this.name = parcel.readString();
@@ -32,13 +22,13 @@ public class Comments implements Parcelable {
         this.body = parcel.readString();
     }
 
-    public static final Parcelable.Creator<Comments> CREATOR = new Parcelable.Creator<Comments>() {
+    public static final Parcelable.Creator<Comment> CREATOR = new Parcelable.Creator<Comment>() {
         @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
-        public Comments createFromParcel(Parcel in) { return new Comments(in); }
+        public Comment createFromParcel(Parcel in) { return new Comment(in); }
 
         @Override
-        public Comments[] newArray(int size) { return new Comments[size]; }
+        public Comment[] newArray(int size) { return new Comment[size]; }
     };
 
     public int getPostId() { return postId; }

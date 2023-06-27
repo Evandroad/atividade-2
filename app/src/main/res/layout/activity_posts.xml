@@ -11,7 +11,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="@string/posts"
+        android:text="@string/post"
         android:textAlignment="center"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,7 +31,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <LinearLayout
-            android:id="@+id/layoutVerticalItens"
+            android:id="@+id/layoutVerticalItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical" />

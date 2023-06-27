@@ -5,34 +5,26 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.RequiresApi;
 
-public class Albums implements Parcelable{
+public class Album implements Parcelable{
 
     private int userId;
     private int id;
     private String title;
 
-    public Albums() {}
-
-    public Albums(int userId, int id, String title) {
-        this.userId = userId;
-        this.id = id;
-        this.title = title;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    private Albums(Parcel parcel) {
+    private Album(Parcel parcel) {
         this.userId = parcel.readInt();
         this.id = parcel.readInt();
         this.title = parcel.readString();
     }
 
-    public static final Parcelable.Creator<Albums> CREATOR = new Parcelable.Creator<Albums>() {
+    public static final Parcelable.Creator<Album> CREATOR = new Parcelable.Creator<Album>() {
         @RequiresApi(api = Build.VERSION_CODES.Q)
         @Override
-        public Albums createFromParcel(Parcel in) { return new Albums(in); }
+        public Album createFromParcel(Parcel in) { return new Album(in); }
 
         @Override
-        public Albums[] newArray(int size) { return new Albums[size]; }
+        public Album[] newArray(int size) { return new Album[size]; }
     };
 
     public int getUserId() { return userId; }

@@ -7,12 +7,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
+import androidx.annotation.NonNull;
+
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,74 +17,56 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-import br.com.evandro.atividade2.model.Albums;
+import br.com.evandro.atividade2.model.Album;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class AlbumsActivity extends BaseActivity implements Response.Listener<JSONArray>, Response.ErrorListener {
-
-    List<Albums> albums =  new ArrayList<>();
+public class AlbumsActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_albums);
 
-        getSupportActionBar().setTitle("Albums");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Albums");
 
-        // Volley
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "https://jsonplaceholder.typicode.com/albums";
+        Api api = ApiClient.getClient().create(Api.class);
+        Call<List<Album>> call = api.getAlbums();
+        call.enqueue(new Callback<List<Album>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<Album>> call, @NonNull Response<List<Album>> response) {
+                if (response.body() == null) {
+                    return;
+                }
 
-        JsonArrayRequest jsonArrayRequest = new JsonArrayRequest(
-            Request.Method.GET,
-            url,
-            null,
-            this,
-            this
-        );
+                fillList(response.body());
+            }
 
-        queue.add(jsonArrayRequest);
+            @Override
+            public void onFailure(@NonNull Call<List<Album>> call, @NonNull Throwable t) {
+                Log.e("Evandro", "Falha ao obter albums.");
+            }
+        });
     }
 
-    @Override
-    public void onResponse(JSONArray response) {
-        try {
-            for (int i = 0; i < response.length(); i++) {
-                JSONObject json = response.getJSONObject(i);
+    public void fillList(List<Album> albums) {
+        Toast.makeText(this,"qtd: " + albums.size(), Toast.LENGTH_SHORT).show();
+        LinearLayout ll = findViewById(R.id.layoutVerticalItems);
 
-                Albums obj = new Albums();
-                obj.setUserId(json.getInt("userId"));
-                obj.setId(json.getInt("id"));
-                obj.setTitle(json.getString("title"));
+        for (Album album : albums) {
+            Button bt = new Button(this);
+            bt.setText(album.getTitle());
+            bt.setOnClickListener(v -> {
+                Intent intent = new Intent(getApplicationContext(), DetailAlbumActivity.class);
+                intent.putExtra("objAlbums", album);
+                startActivity(intent);
+            });
 
-                albums.add(obj);
-            }
-
-            Toast.makeText(this,"qtd: " + albums.size(), Toast.LENGTH_SHORT).show();
-            LinearLayout ll = findViewById(R.id.layoutVerticalItens);
-
-            for (Albums obj1 : albums) {
-                Button bt = new Button(this);
-                bt.setText(obj1.getTitle());
-                bt.setTag(obj1);
-                bt.setOnClickListener(v -> {
-                    Button btn = (Button) v;
-                    Albums albums = (Albums) btn.getTag();
-                    Intent intent = new Intent(getApplicationContext(), DetailAlbumActivity.class);
-                    intent.putExtra("objAlbums", albums);
-                    startActivity(intent);
-                });
-                ll.addView(bt);
-            }
-        } catch (JSONException e) {
-            Log.e("Error: ", e.getMessage());
-            e.printStackTrace();
+            ll.addView(bt);
         }
     }
 
-    @Override
-    public void onErrorResponse(VolleyError error) {
-        String msg = error.getMessage();
-        Toast.makeText(this.getApplicationContext(),"Error: " + msg, Toast.LENGTH_LONG).show();
-    }
 }

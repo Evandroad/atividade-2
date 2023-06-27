@@ -12,15 +12,6 @@ public class Todo implements Parcelable {
     private String title;
     private boolean completed;
 
-    public Todo() {}
-
-    public Todo(int userId, int id, String title, boolean completed) {
-        this.userId = userId;
-        this.id = id;
-        this.title = title;
-        this.completed = completed;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.Q)
     private Todo(Parcel parcel) {
         this.userId = parcel.readInt();

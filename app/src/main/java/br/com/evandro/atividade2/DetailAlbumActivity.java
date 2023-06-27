@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import br.com.evandro.atividade2.model.Albums;
+import java.util.Objects;
+
+import br.com.evandro.atividade2.model.Album;
 
 public class DetailAlbumActivity extends BaseActivity {
 
@@ -13,17 +15,17 @@ public class DetailAlbumActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_album);
 
-        getSupportActionBar().setTitle("Album Detail");
+        Objects.requireNonNull(getSupportActionBar()).setTitle("Album Detail");
 
         Intent intent = getIntent();
-        Albums albums = intent.getParcelableExtra("objAlbums");
+        Album album = intent.getParcelableExtra("objAlbums");
 
         TextView tv = findViewById(R.id.tvIdAlbum);
-        tv.setText(String.valueOf(albums.getId()));
+        tv.setText(String.valueOf(album.getId()));
         tv = findViewById(R.id.tvIdUserAlbum);
-        tv.setText(String.valueOf(albums.getUserId()));
+        tv.setText(String.valueOf(album.getUserId()));
         tv = findViewById(R.id.tvTitleAlbum);
-        tv.setText(albums.getTitle());
+        tv.setText(album.getTitle());
     }
 
 }
